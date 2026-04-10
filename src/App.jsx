@@ -171,7 +171,7 @@ const INCOME_EDU_AGE_PROB = {
   "36_1000_0.05": 0.235,
 };
 const EDU_LOC_CORR    = { 1.0:1.00, 0.6:1.27, 0.15:1.40, 0.05:1.60 };
-const INCOME_JOB_CORR = { 0:1.0, 400:1.05, 500:1.10, 600:1.25, 700:1.30, 800:1.35, 1000:1.40 };
+const INCOME_JOB_CORR = { 0:1.0, 400:1.02, 500:1.03, 600:1.05, 700:1.06, 800:1.07, 1000:1.08 };
 const AGE_SINGLE_CORR = { 25:0.984, 27:0.974, 30:0.937, 33:0.885, 36:0.822 };
 const AGE_LOC_CORR    = 2.0;
 const JOB_LOC_CORR    = 1.2;
@@ -277,11 +277,13 @@ function buildBreakdown(incomeOpt, eduOpt, heightOpt, ts, myAgeVal, pop) {
 
   // トグル
   const bothAgeAndLoc = ts["age"] && ts["loc"];
-  TOGGLES.forEach(t => {
-    if (!ts[t.id]) return;
+  for (const t of TOGGLES) {
+    if (!ts[t.id]) continue;
     const prev = running;
     if (t.id === "age") {
-      // 分母を年齢帯人口に切り替えることで対応済み（value=1.0なので乗算不要）
+      // 分母を年齢帯人口に切り替えることで対応済み
+      steps.push({ label: t.label, rate: running, coeff: null, isBase: false, isDenomChange: true });
+      continue;
     } else if (t.id === "loc") {
       running *= t.value * (EDU_LOC_CORR[eduOpt.value] ?? 1.0);
       if (bothAgeAndLoc) running *= AGE_LOC_CORR;
@@ -299,7 +301,7 @@ function buildBreakdown(incomeOpt, eduOpt, heightOpt, ts, myAgeVal, pop) {
       running *= t.value;
     }
     steps.push({ label: t.label, rate: running, coeff: running / (prev || 1), isBase: false });
-  });
+  }
 
   return steps;
 }
@@ -366,7 +368,15 @@ export default function App() {
     // 全男性ベース（既婚・未婚混在）：学歴→年収の相関込み
     let rateAll = edu.value * height.value;
     if (income.min > 0 && edu.value < 1.0) {
-      const probAll = INCOME_EDU_PROB_ALL_MALE[`${income.min}_${edu.value}`];
+      // 同年代ONのときは年齢帯別PROBを使う（未婚ベースと同じ年齢帯で比較）
+      const useAge = ts["age"] && myAge?.value;
+      let probAll;
+      if (useAge) {
+        probAll = INCOME_EDU_AGE_PROB[`${myAge.value}_${income.min}_${edu.value}`];
+      }
+      if (!probAll) {
+        probAll = INCOME_EDU_PROB_ALL_MALE[`${income.min}_${edu.value}`];
+      }
       if (probAll !== undefined) rateAll = edu.value * probAll * height.value;
       else rateAll = income.value * edu.value * height.value;
     } else if (income.min > 0) {
@@ -595,12 +605,14 @@ export default function App() {
                   const man  = Math.max(Math.round(result.pop * s.rate), 1);
                   const isBase  = s.isBase;
                   const isBonus = !isBase && s.coeff > 1.0;
-                  const coeffPct = Math.round(s.coeff * 100);
+                  const coeffPct = s.coeff !== null ? Math.round(s.coeff * 100) : 0;
                   const coeffTxt = isBase
                     ? ""
-                    : s.coeff > 1.0
-                      ? `補正 ×${coeffPct}%`
-                      : `×${coeffPct}%`;
+                    : s.isDenomChange
+                      ? "分母を同年代に変更"
+                      : s.coeff > 1.0
+                        ? `補正 ×${coeffPct}%`
+                        : `×${coeffPct}%`;
                   return (
                     <div key={i} style={{ marginBottom:14 }}>
                       <div style={{ display:"flex", justifyContent:"space-between", alignItems:"baseline", marginBottom:4 }}>
