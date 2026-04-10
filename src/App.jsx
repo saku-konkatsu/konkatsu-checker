@@ -48,7 +48,7 @@ const MY_EDU_RANK = { high:0, univ:1, march:2, top:3 };
 const IDEAL_EDU_RANK = { 1.0:0, 0.6:1, 0.15:2, 0.05:3 };
 
 const TOGGLES = [
-  { id:"age",    label:"同年代（±3歳以内）",  sub:"年上・年下不問の場合はOFF",        value:0.24, adviceLabel:"同年代条件をなくすと" },
+  { id:"age",    label:"同年代（±3歳以内）",  sub:"年上・年下不問の場合はOFF",        value:1.0,  adviceLabel:"同年代条件をなくすと" },
   { id:"loc",    label:"都内・近郊在住限定",    sub:"遠距離不可の場合はON",             value:0.30, adviceLabel:"都内在住条件をなくすと" },
   { id:"job",    label:"正社員・安定職限定",    sub:"フリーランス・自営不可の場合はON", value:0.75, adviceLabel:"職種条件を緩めると" },
   { id:"single", label:"バツイチを除く",        sub:"初婚限定の場合はON",               value:0.80, adviceLabel:"バツイチOKにすると" },
@@ -281,7 +281,7 @@ function buildBreakdown(incomeOpt, eduOpt, heightOpt, ts, myAgeVal, pop) {
     if (!ts[t.id]) return;
     const prev = running;
     if (t.id === "age") {
-      running *= t.value;
+      // 分母を年齢帯人口に切り替えることで対応済み（value=1.0なので乗算不要）
     } else if (t.id === "loc") {
       running *= t.value * (EDU_LOC_CORR[eduOpt.value] ?? 1.0);
       if (bothAgeAndLoc) running *= AGE_LOC_CORR;
