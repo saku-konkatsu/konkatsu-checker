@@ -223,8 +223,27 @@ function calcRate(incomeOpt, eduOpt, heightOpt, toggleState, myAgeVal) {
 }
 
 function getPopulation(toggleState, myAgeVal) {
-  if (toggleState["age"] && myAgeVal && AGE_POPULATION[myAgeVal]) return AGE_POPULATION[myAgeVal];
-  return TOTAL_POPULATION;
+  if (!toggleState["age"] || !myAgeVal) return TOTAL_POPULATION;
+  // ±3歳の範囲と各年齢帯の重複人口を計算
+  const AGE_BAND_RANGE = { 25:[22,25], 27:[26,28], 30:[29,31], 33:[32,34], 36:[35,35] };
+  const AGE_BAND_POP   = { 25:176, 27:146, 30:197, 33:161, 36:27 };
+  const AGE_CENTER     = { 25:23, 27:27, 30:30, 33:33, 36:35 };
+  const center = AGE_CENTER[myAgeVal];
+  const targetMin = center - 3;
+  const targetMax = center + 3;
+  let totalPop = 0;
+  for (const [bandVal, range] of Object.entries(AGE_BAND_RANGE)) {
+    const [bandMin, bandMax] = range;
+    const bandPop = AGE_BAND_POP[bandVal];
+    const bandYears = bandMax - bandMin + 1;
+    const overlapMin = Math.max(targetMin, bandMin);
+    const overlapMax = Math.min(targetMax, bandMax);
+    if (overlapMin <= overlapMax) {
+      const overlapYears = overlapMax - overlapMin + 1;
+      totalPop += bandPop * overlapYears / bandYears;
+    }
+  }
+  return Math.round(totalPop);
 }
 
 // 分母から始めて各条件で絞り込むさまを表示
