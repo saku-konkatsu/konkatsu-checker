@@ -698,8 +698,24 @@ export default function App() {
         )}
       </div>
 
+      {/* 固定アフィリエイトバナー */}
+      <div style={{
+        position:"fixed", bottom:0, left:0, right:0, zIndex:1000,
+        background:"#fff", borderTop:"1px solid #D8E4F0",
+        padding:"10px 16px", textAlign:"center",
+        boxShadow:"0 -2px 12px rgba(0,0,0,0.08)"
+      }}>
+        <div style={{ fontSize:11, color:"#8AA0B8", marginBottom:4 }}>アプリと並行して試してみる</div>
+        <div dangerouslySetInnerHTML={{ __html: `
+          <a href="https://px.a8.net/svt/ejp?a8mat=4B1XE0+CXL2XE+4HMW+5ZEMP" rel="nofollow">
+            <img border="0" width="120" height="60" alt="" src="https://www20.a8.net/svt/bgt?aid=260430408782&wid=005&eno=01&mid=s00000020948001005000&mc=1">
+          </a>
+          <img border="0" width="1" height="1" src="https://www11.a8.net/0.gif?a8mat=4B1XE0+CXL2XE+4HMW+5ZEMP" alt="">
+        ` }} />
+      </div>
+
       {/* フッター */}
-      <div style={{ maxWidth:480, margin:"24px auto 0", padding:"16px 20px", borderTop:"1px solid #D8E4F0", textAlign:"center" }}>
+      <div style={{ maxWidth:480, margin:"24px auto 0", padding:"16px 20px 80px", borderTop:"1px solid #D8E4F0", textAlign:"center" }}>
         <div style={{ fontSize:10, color:"#8AA0B8", lineHeight:1.9 }}>
           © 2025 Saku All Rights Reserved.<br />
           本コンテンツの無断転載・複製を禁じます。<br />
