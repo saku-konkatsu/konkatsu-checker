@@ -701,16 +701,19 @@ export default function App() {
       {/* 固定アフィリエイトバナー */}
       <div style={{
         position:"fixed", bottom:0, left:0, right:0, zIndex:1000,
-        background:"#fff", borderTop:"1px solid #D8E4F0",
-        padding:"10px 16px", textAlign:"center",
-        boxShadow:"0 -2px 12px rgba(0,0,0,0.08)"
+        background:"#1E3A5F", borderTop:"2px solid #C9A84C",
+        padding:"8px 16px 10px", textAlign:"center",
+        boxShadow:"0 -4px 16px rgba(0,0,0,0.15)"
       }}>
-        <div style={{ fontSize:11, color:"#8AA0B8", marginBottom:4 }}>アプリと並行して試してみる</div>
+        <div style={{ display:"flex", alignItems:"center", justifyContent:"center", gap:6, marginBottom:6 }}>
+          <span style={{ fontSize:9, color:"#C9A84C", border:"1px solid #C9A84C", borderRadius:3, padding:"1px 4px", letterSpacing:"0.05em", flexShrink:0 }}>PR</span>
+          <div dangerouslySetInnerHTML={{ __html: `<a href="https://px.a8.net/svt/ejp?a8mat=4B1XE0+DK7JWY+515E+5YRHE" rel="nofollow" style="font-size:11px;color:#A8C4E0;text-decoration:underline;text-underline-offset:2px;">マッチングアプリの写真なら【オトフィー】</a><img border="0" width="1" height="1" src="https://www13.a8.net/0.gif?a8mat=4B1XE0+DK7JWY+515E+5YRHE" alt="">` }} />
+        </div>
         <div dangerouslySetInnerHTML={{ __html: `
-          <a href="https://px.a8.net/svt/ejp?a8mat=4B1XE0+CXL2XE+4HMW+5ZEMP" rel="nofollow">
-            <img border="0" width="120" height="60" alt="" src="https://www20.a8.net/svt/bgt?aid=260430408782&wid=005&eno=01&mid=s00000020948001005000&mc=1">
+          <a href="https://px.a8.net/svt/ejp?a8mat=4B1XE0+DK7JWY+515E+5ZEMP" rel="nofollow">
+            <img border="0" width="320" height="50" alt="" src="https://www29.a8.net/svt/bgt?aid=260430408820&wid=005&eno=01&mid=s00000023477001005000&mc=1" style="border-radius:6px;">
           </a>
-          <img border="0" width="1" height="1" src="https://www11.a8.net/0.gif?a8mat=4B1XE0+CXL2XE+4HMW+5ZEMP" alt="">
+          <img border="0" width="1" height="1" src="https://www17.a8.net/0.gif?a8mat=4B1XE0+DK7JWY+515E+5ZEMP" alt="">
         ` }} />
       </div>
 
