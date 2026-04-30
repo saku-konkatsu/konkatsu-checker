@@ -408,9 +408,10 @@ export default function App() {
     const per1000   = Math.max(Math.round(rate * 1000), 1);
     const actualMan = Math.max(Math.round(pop * rate), 1);
 
-    const ageLabels = { 25:"25歳以下", 27:"26〜28歳", 30:"29〜31歳", 33:"32〜34歳", 36:"35歳" };
-    const popLabel = ts["age"] && myAge
-      ? `${ageLabels[myAge.value]}前後の未婚男性 約${pop}万人のうち`
+    const AGE_CENTER_MAP = { 25:23, 27:27, 30:30, 33:33, 36:35 };
+    const center = AGE_CENTER_MAP[myAge?.value];
+    const popLabel = ts["age"] && myAge && center
+      ? `${center-3}〜${center+3}歳の未婚男性 約${pop}万人のうち`
       : "22〜35歳の未婚男性 約610万人のうち";
 
     // 上昇婚の判定
