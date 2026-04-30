@@ -251,8 +251,8 @@ function buildBreakdown(incomeOpt, eduOpt, heightOpt, ts, myAgeVal, pop) {
   const steps = [];
   let running = 1.0;
   // 分母（全員）を最初のステップとして追加
-  const popLabel = ts["age"] && myAgeVal && AGE_POPULATION[myAgeVal]
-    ? `対象：${AGE_POPULATION[myAgeVal]}万人（同年代未婚男性）`
+  const   popLabel = ts["age"] && myAgeVal
+    ? `対象：${pop}万人（同年代±3歳未婚男性）`
     : `対象：${pop}万人（22〜35歳未婚男性）`;
   steps.push({ label: popLabel, rate: 1.0, coeff: 1.0, isBase: true });
 
